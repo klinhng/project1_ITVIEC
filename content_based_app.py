@@ -27,9 +27,9 @@ with tab1:
         if not filtered.empty:
             st.dataframe(filtered.rename(columns={
                 "Company Name": "Công ty",
-                "What I liked": "Review tích cực",
-                "Suggestions for improvement": "Review tiêu cực",
-                "sentiment": "Cảm xúc"
+                "What I liked": "Điều tôi thích về công ty này",
+                "Suggestions for improvement": "Góp ý khắc phục",
+                "sentiment": "Loại cảm xúc"
             }))
         else:
             st.info("Không tìm thấy công ty có review phù hợp với từ khóa.")
