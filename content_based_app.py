@@ -26,7 +26,7 @@ with tab1:
         filtered = temp_df.loc[mask, ["Company Name", "What I liked", "Suggestions for improvement", "sentiment"]].dropna(how='all').head(10)
         if not filtered.empty:
             st.dataframe(filtered.rename(columns={
-                "Company Name": "Công ty",
+                "Company Name": "Tên công ty",
                 "What I liked": "Điều tôi thích về công ty này",
                 "Suggestions for improvement": "Góp ý khắc phục",
                 "sentiment": "Loại cảm xúc"
