@@ -6,7 +6,7 @@ from wordcloud import WordCloud
 
 
 st.set_page_config(layout="wide")
-st.title("ITViec Company Review Dashboard")
+st.title("Tổng quan đánh giá công ty từ ITViec")
 
 # Đọc dữ liệu
 df = pd.read_excel('Processed_reviews.xlsx')
