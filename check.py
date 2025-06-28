@@ -13,7 +13,7 @@ st.subheader("Chào mừng các bạn đến với đồ án tốt nghiệp DS-M
 st.write("### Có 2 chủ đề trong khóa học:")
 
 # Đọc dữ liệu đã xử lý (giả sử bạn đã lưu ra file csv từ notebook)
-df = pd.read_csv('processed_reviews.csv')
+df = pd.read_csv('Processed_reviews.csv')
 
 st.title("Phân tích đánh giá công ty - Data Science Project 1")
 
