@@ -45,17 +45,17 @@ with tab2:
         st.write(f"Số lượt đánh giá: **{len(company_df)}**")
         st.write(f"Điểm trung bình: **{company_df['Rating'].mean():.2f}**")
         st.write("**Phân bố cảm xúc:**")
-        sentiment_counts = company_df['sentiment'].value_counts()
+        sentiment_counts = df_company['sentiment'].value_counts()
         st.bar_chart(sentiment_counts)
 
         st.write("**Nhận xét tích cực nổi bật:**")
-        st.write(company_df[company_df["sentiment"] == "positive"]["What I liked"].dropna().head(3).tolist())
+        st.write(df_company[df_company["sentiment"] == "positive"]["What I liked"].dropna().head(3).tolist())
         st.write("**Nhận xét tiêu cực nổi bật:**")
-        st.write(company_df[company_df["sentiment"] == "negative"]["Suggestions for improvement"].dropna().head(3).tolist())
+        st.write(df_company[df_company["sentiment"] == "negative"]["Suggestions for improvement"].dropna().head(3).tolist())
 
     with col2:
         st.subheader("WordCloud tích cực")
-        pos_text = " ".join(company_df[company_df['sentiment'] == 'positive']['liked_clean'].dropna())
+        pos_text = " ".join(df_company[df_company['sentiment'] == 'positive']['liked_final'].dropna())
         if pos_text:
             wc = WordCloud(width=400, height=200, background_color="white").generate(pos_text)
             fig, ax = plt.subplots(figsize=(6, 3))
@@ -63,7 +63,7 @@ with tab2:
             ax.axis("off")
             st.pyplot(fig)
         st.subheader("WordCloud tiêu cực")
-        neg_text = " ".join(company_df[company_df['sentiment'] == 'negative']['suggestion_clean'].dropna())
+        neg_text = " ".join(df_company[df_company['sentiment'] == 'negative']['suggestion_final'].dropna())
         if neg_text:
             wc = WordCloud(width=400, height=200, background_color="white").generate(neg_text)
             fig, ax = plt.subplots(figsize=(6, 3))
@@ -72,7 +72,7 @@ with tab2:
             st.pyplot(fig)
 
     # Cụm phù hợp (nếu có dữ liệu)
-    if {'x', 'y', 'cluster'}.issubset(company_df.columns):
+    if {'x', 'y', 'cluster'}.issubset(df_company.columns):
         st.subheader("Phân cụm đánh giá (KMeans)")
         fig, ax = plt.subplots(figsize=(6, 4))
         sns.scatterplot(data=company_df, x="x", y="y", hue="cluster", palette="Set2", ax=ax)
