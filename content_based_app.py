@@ -9,7 +9,7 @@ st.set_page_config(layout="wide")
 st.title("Tổng quan đánh giá công ty từ ITViec")
 
 # Đọc dữ liệu
-df = pd.read_excel('Processed_reviews.xlsx')
+df_reviews = pd.read_excel('Processed_reviews.xlsx')
 
 tab1, tab2 = st.tabs(["🔍 Tìm review theo từ khóa", "🏢 Tổng quan công ty"])
 
@@ -17,7 +17,7 @@ with tab1:
     st.header("1. Tìm công ty theo từ khóa nổi bật")
     keyword = st.text_input("Nhập từ khóa bạn quan tâm:")
     if keyword:
-        temp_df = df.copy()
+        temp_df = df_reviews.copy()
         # Lọc các review chứa từ khóa ở 1 trong 2 cột
         mask = (
             temp_df["What I liked"].fillna("").str.contains(keyword, case=False, na=False) |
@@ -36,22 +36,22 @@ with tab1:
 
 with tab2:
     st.header("2. Tổng quan & trực quan hóa công ty")
-    company2 = st.selectbox("Chọn công ty", df["Company Name"].dropna().unique(), key="company2")
-    company_df = df[df["Company Name"] == company2]
+    company2 = st.selectbox("Chọn công ty", df_reviews["Company Name"].dropna().unique(), key="company2")
+    company_df = df_reviews[df_reviews["Company Name"] == company2]
 
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Tổng quan")
         st.write(f"Số lượt đánh giá: **{len(company_df)}**")
-        st.write(f"Điểm trung bình: **{company_df['Rating'].mean():.2f}**")
+        st.write(f"Điểm trung bình: **{df_reviews['Rating'].mean():.2f}**")
         st.write("**Phân bố cảm xúc:**")
-        sentiment_counts = df_company['sentiment'].value_counts()
+        sentiment_counts = df_reviews['sentiment'].value_counts()
         st.bar_chart(sentiment_counts)
 
         st.write("**Nhận xét tích cực nổi bật:**")
-        st.write(df_company[df_company["sentiment"] == "positive"]["What I liked"].dropna().head(3).tolist())
+        st.write(df_reviews[df_reviews["sentiment"] == "positive"]["What I liked"].dropna().head(3).tolist())
         st.write("**Nhận xét tiêu cực nổi bật:**")
-        st.write(df_company[df_company["sentiment"] == "negative"]["Suggestions for improvement"].dropna().head(3).tolist())
+        st.write(df_reviews[df_reviews["sentiment"] == "negative"]["Suggestions for improvement"].dropna().head(3).tolist())
 
     with col2:
         st.subheader("WordCloud tích cực")
@@ -63,7 +63,7 @@ with tab2:
             ax.axis("off")
             st.pyplot(fig)
         st.subheader("WordCloud tiêu cực")
-        neg_text = " ".join(df_company[df_company['sentiment'] == 'negative']['suggestion_final'].dropna())
+        neg_text = " ".join(df_reviews[df_review['sentiment'] == 'negative']['suggestion_final'].dropna())
         if neg_text:
             wc = WordCloud(width=400, height=200, background_color="white").generate(neg_text)
             fig, ax = plt.subplots(figsize=(6, 3))
@@ -72,7 +72,7 @@ with tab2:
             st.pyplot(fig)
 
     # Cụm phù hợp (nếu có dữ liệu)
-    if {'x', 'y', 'cluster'}.issubset(df_company.columns):
+    if {'x', 'y', 'cluster'}.issubset(company_df.columns):
         st.subheader("Phân cụm đánh giá (KMeans)")
         fig, ax = plt.subplots(figsize=(6, 4))
         sns.scatterplot(data=company_df, x="x", y="y", hue="cluster", palette="Set2", ax=ax)
